@@ -6,10 +6,10 @@ import json
 from collections import OrderedDict
 
 #FOR PYTHON 2
-import MySQLdb
+#import MySQLdb
 
 #FOR PYTHON3
-#import pymysql
+import pymysql
 
 from sqlalchemy import create_engine
 import datetime
@@ -48,19 +48,19 @@ def total_win_loss_by_player(player_name):
 
 
 def set_time_player(player_name):
-    conn = mySQL()
-    curr = conn.cursor()
-    curr.execute('''USE tennis_data;''')
+    conn = SQL_connect()
+    #curr = conn.cursor()
+    conn.execute('''USE tennis_data;''')
 
     player_name = str(player_name)
 
     sql_command_id_win = """SELECT score, best_of, minutes FROM atp_matches_1968_2017 WHERE winner_name = '%s';"""
-    curr.execute(sql_command_id_win %(player_name))
-    win_data = curr.fetchall()
+    win_data = conn.fetch(sql_command_id_win %(player_name))
+    #win_data = conn.fetch()
 
     sql_command_id_loss = """SELECT score, best_of, minutes FROM atp_matches_1968_2017 WHERE loser_name = '%s';"""
-    curr.execute(sql_command_id_loss %(player_name))
-    loss_data = curr.fetchall()
+    loss_data = conn.fetch(sql_command_id_loss %(player_name))
+    #loss_data = conn.fetch()
 
     df_win = pd.DataFrame(list(win_data), index=None, columns=['score', 'best_of', 'time'])
     df_loss = pd.DataFrame(list(loss_data), index=None, columns=['score', 'best_of', 'time'])

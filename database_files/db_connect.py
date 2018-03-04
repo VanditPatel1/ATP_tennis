@@ -1,4 +1,5 @@
-import MySQLdb
+#import MySQLdb
+import pymysql.cursors
 from sqlalchemy import create_engine
 
 class SQL_connect:
@@ -7,7 +8,7 @@ class SQL_connect:
         self.connect()
 
     def connect(self):
-        self.conn = MySQLdb.connect(host='localhost',
+        self.conn = pymysql.connect(host='localhost',
                                 user = 'root',
                                 passwd = '12qwaszx')
 
@@ -22,6 +23,17 @@ class SQL_connect:
 
         except Exception as e:
             print (e)
+            raise(e)
+
+    def fetch(self, command):
+        try:
+            self.curr.execute(command)
+            return self.curr.fetchall()
+
+        except Exception as e:
+            print (e)
+            raise(e)
+
 
     def commit(self):
         try:
@@ -30,3 +42,4 @@ class SQL_connect:
 
         except Exception as e:
             print (e)
+            raise(e)
