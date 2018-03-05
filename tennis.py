@@ -11,6 +11,8 @@ from sqlalchemy import create_engine
 import datetime
 from database_files.db_connect import SQL_connect
 
+from plotter import *
+
 
 def total_win_loss_by_player(player_name):
     db = SQL_connect()
@@ -88,14 +90,12 @@ def player_rank(player_name):
     df = df.reset_index(drop=True)
     df.fillna(value=np.nan, inplace=True)
 
-    #df.plot(x='ranking_date', y='rank')
-    #df.plot(x='ranking_date', y='ranking_points')
-    plt.figure()
-    l = df.plot(x='rank', y='ranking_points')
-    ll = l.get_figure()
-    ll.savefig('test.png')
-
-
+    figg=df.plot(x='ranking_date', y='rank')
+    g=df.plot(x='ranking_date', y='ranking_points')
+    fig = df.plot(x='rank', y='ranking_points')
+    save_plot('test1.png', fig)
+    save_plot('test2.png', figg)
+    save_plot('test3.png', g)
 
 #total_win_loss_by_player('Roger Federer')
 player_rank('Roger Federer')
