@@ -25,26 +25,27 @@ def total_win_loss_by_player(player_name):
     sql_command_loss = """SELECT score, winner_name FROM atp_matches_1968_2017 \
                         WHERE loser_name = '%s';"""
 
-    conn.execute(sql_command_wins %(player_name))
-    wins = conn.fetchall()
+    wins = db.fetch(sql_command_wins %(player_name))
     total_wins = len(wins)
 
-    conn.execute(sql_command_loss %(player_name))
-    loss = conn.fetchall()
+    loss = db.fetch(sql_command_loss %(player_name))
     total_loss = len(loss)
 
     df_wins = pd.DataFrame(list(wins), index=None, columns=['score', 'player'])
     df_loss = pd.DataFrame(list(loss), index=None, columns=['score', 'player'])
 
-    dfs = [df_wins, df_loss]
+    df_wins.fillna(value=np.nan, inplace=True)
+    df_loss.fillna(value=np.nan, inplace=True)
 
+
+
+
+    dfs = [df_wins, df_loss]
     df_total_games = pd.concat(dfs)
     df_total_games.fillna(value=np.nan, inplace=True)
     total_games = total_loss + total_wins
 
-    print (df_wins)
-    print (df_loss)
-    print (df_total_games)
+
 
 
 
@@ -84,18 +85,15 @@ def player_rank(player_name):
 
     #Convert to date-time
     df['ranking_date'] = df['ranking_date'].apply(lambda x: pd.to_datetime(str(x), format='%Y%m%d'))
-
     df['ranking_points'] = pd.to_numeric(df['ranking_points'], errors='ignore')
 
     df = df.reset_index(drop=True)
     df.fillna(value=np.nan, inplace=True)
 
-    figg=df.plot(x='ranking_date', y='rank')
-    g=df.plot(x='ranking_date', y='ranking_points')
-    fig = df.plot(x='rank', y='ranking_points')
-    save_plot('test1.png', fig)
-    save_plot('test2.png', figg)
-    save_plot('test3.png', g)
+    x_y_plot(df, 'ranking_date', 'rank', 'test1')
+    x_y_plot(df, 'ranking_date', 'ranking_points', 'test2')
+    x_y_plot(df, 'rank', 'ranking_points', 'test3')
+
 
 #total_win_loss_by_player('Roger Federer')
 player_rank('Roger Federer')
