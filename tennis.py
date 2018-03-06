@@ -12,6 +12,7 @@ import datetime
 from database_files.db_connect import SQL_connect
 
 from plotter import *
+from support import *
 
 
 def total_win_loss_by_player(player_name):
@@ -37,7 +38,7 @@ def total_win_loss_by_player(player_name):
     df_wins.fillna(value=np.nan, inplace=True)
     df_loss.fillna(value=np.nan, inplace=True)
 
-
+    total(df_wins, 'player')
 
 
     dfs = [df_wins, df_loss]
@@ -95,6 +96,6 @@ def player_rank(player_name):
     x_y_plot(df, 'rank', 'ranking_points', 'test3')
 
 
-#total_win_loss_by_player('Roger Federer')
-player_rank('Roger Federer')
+total_win_loss_by_player('Roger Federer')
+#player_rank('Roger Federer')
 #set_time_player('Roger Federer')
