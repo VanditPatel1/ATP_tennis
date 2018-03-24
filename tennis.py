@@ -11,11 +11,14 @@ from sqlalchemy import create_engine
 import datetime
 from database_files.db_connect import SQL_connect
 
-from plotter import *
-from support import *
+from plotter import x_y_plot
+from support import total_unique
 
 
 def total_win_loss_by_player(player_name):
+
+    """ Find all games player played and their results """
+
     db = SQL_connect()
     db.execute('''USE tennis_data;''')
 
@@ -38,7 +41,9 @@ def total_win_loss_by_player(player_name):
     df_wins.fillna(value=np.nan, inplace=True)
     df_loss.fillna(value=np.nan, inplace=True)
 
-    total(df_wins, 'player')
+    """ total wins and losses against individual players  """
+    p_win = total_unique(df_wins, 'player') #players won against
+    p_loss = total_unique(df_loss, 'player') #players lost against
 
 
     dfs = [df_wins, df_loss]
@@ -46,6 +51,7 @@ def total_win_loss_by_player(player_name):
     df_total_games.fillna(value=np.nan, inplace=True)
     total_games = total_loss + total_wins
 
+    print (df_total_games)
 
 
 

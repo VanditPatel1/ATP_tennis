@@ -1,8 +1,21 @@
 import pandas as pd
+from pprint import pprint
 
-def total(df, column):
+def total_unique(df, column):
+    """
+    Get total unique entries in a series
+    and how many times it occured returned
+    as a dict
+    """
 
-    all_names = []
-    print (df)
-    for key, value in df.itterows():
-        print ("key:{0}, value: {1}").format(key, value)
+    series = df[column]
+    unique = {}
+
+    for key, value in series.iteritems():
+        if value not in unique:
+            unique[value] = 1
+
+        else:
+            unique[value] += 1
+
+    return unique
